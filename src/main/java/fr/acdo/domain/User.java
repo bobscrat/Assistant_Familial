@@ -4,12 +4,9 @@ import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +17,7 @@ import lombok.Setter;
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue
 	private Long id;
 
 	private String firstName;
@@ -37,13 +34,11 @@ public class User {
 	private String image;
 
 	@ManyToOne
-	@JoinColumn(name = "Role_id")
-	@JsonManagedReference
-	private Role roletest;
+	@JoinColumn(name = "role_id")
+	private Role role;
 
 	@ManyToOne
-	@JoinColumn(name = "Family_id")
-	@JsonManagedReference
-	private Family familytest;
+	@JoinColumn(name = "family_id")
+	private Family family;
 
 }
