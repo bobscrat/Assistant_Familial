@@ -1,13 +1,12 @@
 package fr.acdo.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.acdo.domain.User;
@@ -48,8 +47,15 @@ public class UserController {
 	}
 
 	@PostMapping("/user/save")
-	public String addUser(@RequestParam String firstName, @RequestParam LocalDate birthday) {
-		return service.addUser(firstName, birthday);
+	public User addUser(@RequestBody User user) {
+		User newUser = null;
+
+		try {
+			newUser = service.addUser(newUser);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return newUser;
 	}
 
 }
