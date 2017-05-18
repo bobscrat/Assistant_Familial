@@ -30,6 +30,15 @@ public class EventController {
 	}
 
 	@GetMapping
+	public List<Event> getEvents() {
+		List<Event> list = service.getAllEvents();
+		if (null == list) {
+			throw new CustomException("La liste d'événements n'a pas été trouvée");
+		}
+		return list;
+	}
+
+	@GetMapping("/filters")
 	public List<Event> getEventsWithFilters(@RequestParam(value = "family") Long familyId,
 			@RequestParam(value = "user") Long userId, @RequestParam(value = "category") Long categoryId,
 			@RequestParam(value = "project") Long projectId) {

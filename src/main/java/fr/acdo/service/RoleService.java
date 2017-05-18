@@ -12,27 +12,27 @@ import fr.acdo.repository.RoleDao;
 
 @Service
 public class RoleService {
-	
-	//Je fais appel à mon Role Dao 
-	private RoleDao repo;	
-	
-	//Constructeur qui est lancé automatiquement avec l'annotation
-	@Autowired 
+
+	// Je fais appel à mon Role Dao
+	private RoleDao repo;
+
+	// Constructeur qui est lancé automatiquement avec l'annotation
+	@Autowired
 	public RoleService(RoleDao role) {
 		this.repo = role;
 	}
-	
-	//Je crée un méthode qui recupere dans une liste tous les roles
+
+	// Je crée un méthode qui recupere dans une liste tous les roles
 	public List<Role> getAllRole() {
 		return repo.findAll();
 	}
-	
-	//Méthode qui permet de récuperer un role avec id en parametre
-	public Role getById(Long id){
+
+	// Méthode qui permet de récuperer un role avec id en parametre
+	public Role getById(Long id) {
 		return repo.findOne(id);
 	}
-	
-	public Role createRole(Role role){
+
+	public Role saveRole(Role role) {
 		return repo.save(role);
 	}
 }

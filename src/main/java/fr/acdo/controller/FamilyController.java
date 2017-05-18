@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.acdo.domain.Family;
 import fr.acdo.service.FamilyService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000") // à supprimer en prod
+@CrossOrigin(origins = "*") // à supprimer en prod
 public class FamilyController {
 
 	private FamilyService familyService;
@@ -45,7 +45,7 @@ public class FamilyController {
 	}
 
 	@PostMapping("api/family")
-	public Family addFamily(@RequestParam Family family) {
+	public Family addFamily(@RequestBody Family family) {
 		return familyService.addFamily(family);
 	}
 

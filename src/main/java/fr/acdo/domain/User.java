@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class User {
 	@GeneratedValue
 	private Long id;
 
+	@NotNull
 	private String firstName;
 
 	private LocalDate birthday;
@@ -28,15 +30,16 @@ public class User {
 
 	private String password;
 
-	// FIX ME => Penser à remplir la base en boolean
 	private boolean active;
 
 	private String image;
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "role_id")
 	private Role role;
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "family_id")
 	private Family family;

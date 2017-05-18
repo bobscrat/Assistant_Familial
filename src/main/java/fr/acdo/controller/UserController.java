@@ -2,9 +2,11 @@ package fr.acdo.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +15,8 @@ import fr.acdo.domain.User;
 import fr.acdo.service.UserService;
 
 @RestController
-@RequestMapping("/api")
+@CrossOrigin(origins = "*")
+@RequestMapping("/api/user")
 public class UserController {
 
 	private UserService service;
@@ -22,7 +25,7 @@ public class UserController {
 		this.service = service;
 	}
 
-	@GetMapping("/users")
+	@GetMapping
 	public List<User> listUser() {
 		List<User> listOfUser = null;
 
@@ -34,7 +37,7 @@ public class UserController {
 		return listOfUser;
 	}
 
-	@GetMapping("/user/{id}")
+	@GetMapping("/{id}")
 	public User getUser(@PathVariable Long id) {
 		User myUser = null;
 
@@ -46,8 +49,20 @@ public class UserController {
 		return myUser;
 	}
 
-	@PostMapping("/user/save")
+	@PostMapping
 	public User addUser(@RequestBody User user) {
+		User newUser = null;
+
+		try {
+			newUser = service.addUser(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return newUser;
+	}
+
+	@PutMapping
+	public User updateUser(@RequestBody User user) {
 		User newUser = null;
 
 		try {
