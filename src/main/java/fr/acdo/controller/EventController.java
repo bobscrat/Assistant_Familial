@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.acdo.domain.Event;
+import fr.acdo.exception.CustomException;
 import fr.acdo.service.EventService;
 
 @CrossOrigin(origins = "*") // à supprimer en prod
@@ -30,56 +30,41 @@ public class EventController {
 	}
 
 	@GetMapping
-	public List<Event> listEvents() {
-		List<Event> list = null;
-		try {
-			list = service.getAllEvents();
-		} catch (Exception e) {
-			e.printStackTrace();
+	public List<Event> getEventsWithFilters(@RequestParam(value = "family") Long familyId,
+			@RequestParam(value = "user") Long userId, @RequestParam(value = "category") Long categoryId,
+			@RequestParam(value = "project") Long projectId) {
+		List<Event> list = service.getEventsWithFilters(familyId, userId, categoryId, projectId);
+		if (null == list) {
+			throw new CustomException("Events not found");
 		}
 		return list;
 	}
 
-	@GetMapping("/filter")
-	public List<Event> listEventsWithFilters(@RequestParam(value = "user") Long userId,
-			@RequestParam(value = "category") Long categoryId, @RequestParam(value = "project") Long projectId) {
-		return service.getEventsWithFilters(userId, categoryId, projectId);
-	}
-
 	@GetMapping("/{id}")
 	public Event getEvent(@PathVariable Long id) {
-		return service.getEventyById(id);
+		Event event = service.getEventyById(id);
+		if (null == event) {
+			throw new CustomException("Event with id = " + id + " not found");
+		}
+		return event;
 	}
 
 	@PostMapping
 	public Event createEvent(@RequestBody @Valid Event event) {
-		Event newEvent = null;
-		try {
-			newEvent = service.saveEvent(event);
-		} catch (Exception e) {
-			e.printStackTrace();
+		Event newEvent = service.saveEvent(event);
+		if (null == newEvent) {
+			throw new CustomException("Event not saved");
 		}
 		return newEvent;
 	}
 
 	@PutMapping
 	public Event updateEvent(@RequestBody @Valid Event event) {
-		Event newEvent = null;
-		try {
-			newEvent = service.saveEvent(event);
-		} catch (Exception e) {
-			e.printStackTrace();
+		Event newEvent = service.saveEvent(event);
+		if (null == newEvent) {
+			throw new CustomException("Event with id = " + event.getId() + " not updated");
 		}
 		return newEvent;
-	}
-
-	@DeleteMapping("/{id}")
-	public void deleteEvent(@PathVariable Long id) {
-		try {
-			service.deleteEvent(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

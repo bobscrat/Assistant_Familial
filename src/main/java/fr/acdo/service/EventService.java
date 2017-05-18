@@ -16,6 +16,11 @@ public class EventService {
 		this.repo = repo;
 	}
 
+	public List<Event> getEventsWithFilters(Long familyId, Long userId, Long categoryId, Long projectId) {
+		// à compléter avec les filtres
+		return repo.findAll();
+	}
+
 	public List<Event> getAllEvents() {
 		return repo.findAll();
 	}
@@ -60,10 +65,6 @@ public class EventService {
 
 	public List<Event> getEventsByCategoryIdAndProjectId(Long idCategory, Long idProject) {
 		return repo.findByCategoryIdAndProjectId(idCategory, idProject);
-	}
-
-	public List<Event> getEventsWithFilters(Long userId, Long categoryId, Long projectId) {
-		return repo.findByUserIdAndCategoryId(userId, categoryId);
 	}
 
 }
