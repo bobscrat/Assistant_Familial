@@ -35,7 +35,7 @@ public class EventController {
 			@RequestParam(value = "project") Long projectId) {
 		List<Event> list = service.getEventsWithFilters(familyId, userId, categoryId, projectId);
 		if (null == list) {
-			throw new CustomException("Events not found");
+			throw new CustomException("La liste d'événements n'a pas été trouvée");
 		}
 		return list;
 	}
@@ -44,7 +44,7 @@ public class EventController {
 	public Event getEvent(@PathVariable Long id) {
 		Event event = service.getEventyById(id);
 		if (null == event) {
-			throw new CustomException("Event with id = " + id + " not found");
+			throw new CustomException("L'événement avec l'id = " + id + " n'a pas été trouvé");
 		}
 		return event;
 	}
@@ -53,7 +53,7 @@ public class EventController {
 	public Event createEvent(@RequestBody @Valid Event event) {
 		Event newEvent = service.saveEvent(event);
 		if (null == newEvent) {
-			throw new CustomException("Event not saved");
+			throw new CustomException("L'événement n'a pas été enregistré");
 		}
 		return newEvent;
 	}
@@ -62,7 +62,7 @@ public class EventController {
 	public Event updateEvent(@RequestBody @Valid Event event) {
 		Event newEvent = service.saveEvent(event);
 		if (null == newEvent) {
-			throw new CustomException("Event with id = " + event.getId() + " not updated");
+			throw new CustomException("L'événement avec l'id = " + event.getId() + " n'a pas été mis à jour");
 		}
 		return newEvent;
 	}

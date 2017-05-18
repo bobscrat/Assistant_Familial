@@ -32,7 +32,7 @@ public class PriorityController {
 	public List<Priority> listPriorities() {
 		List<Priority> list = service.getAllPriorities();
 		if (null == list) {
-			throw new CustomException("Priorities not found");
+			throw new CustomException("La liste de priorités n'a pas été trouvée");
 		}
 		return list;
 	}
@@ -41,7 +41,7 @@ public class PriorityController {
 	public Priority getPriority(@PathVariable Long id) {
 		Priority priority = service.getPriorityById(id);
 		if (null == priority) {
-			throw new CustomException("Priority with id = " + id + " not found");
+			throw new CustomException("La priorité avec l'id = " + id + " n'a pas été trouvée");
 		}
 		return priority;
 	}
@@ -50,7 +50,7 @@ public class PriorityController {
 	public Priority savePriority(@RequestBody @Valid Priority priority) {
 		Priority newPriority = service.savePriority(priority);
 		if (null == newPriority) {
-			throw new CustomException("Priority not saved");
+			throw new CustomException("La priorité n'a pas été enregistrée");
 		}
 		return newPriority;
 	}
@@ -59,7 +59,7 @@ public class PriorityController {
 	public Priority updatePriority(@RequestBody @Valid Priority priority) {
 		Priority newPriority = service.savePriority(priority);
 		if (null == newPriority) {
-			throw new CustomException("Priority with id = " + priority.getId() + " not updated");
+			throw new CustomException("La priorité avec l'id = " + priority.getId() + " n'a pas été mise à jour");
 		}
 		return newPriority;
 	}
