@@ -51,7 +51,7 @@ public class EventController {
 
 	@GetMapping("/{id}")
 	public Event getEvent(@PathVariable Long id) {
-		Event event = service.getEventyById(id);
+		Event event = service.getEventById(id);
 		if (null == event) {
 			throw new CustomException("L'événement avec l'id = " + id + " n'a pas été trouvé");
 		}

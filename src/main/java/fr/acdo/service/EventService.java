@@ -25,16 +25,12 @@ public class EventService {
 		return repo.findAll();
 	}
 
-	public Event getEventyById(Long id) {
+	public Event getEventById(Long id) {
 		return repo.findOne(id);
 	}
 
 	public Event saveEvent(Event event) {
 		return repo.save(event);
-	}
-
-	public void deleteEvent(Long id) {
-		repo.delete(id);
 	}
 
 	// QUERY METHODS de la classe Repository

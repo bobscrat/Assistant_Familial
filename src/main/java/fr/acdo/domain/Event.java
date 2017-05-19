@@ -43,7 +43,6 @@ public class Event {
 	// format du Json POST = "deadline": "2017-06-13T18:00:00" cad
 	// yyyy-mm-ddThh:mm:ss
 	// format du Json GET = "deadline":[2017,6,13,18,0] cad [yyyy,m,d,h,min]
-
 	private LocalDateTime deadline;
 
 	// Integer ou Float pour que la valeur puisse être nulle
