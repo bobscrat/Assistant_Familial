@@ -16,15 +16,15 @@ public class ErrorMessages {
 	}
 
 	public void saveInBase(Class<?> class1, String string) {
-		logger.error("ERREUR : Sur " + class1 + " la méthode " + string + " ne peut sauvegarder. ");
+		logger.error("ERREUR : Sur " + class1 + " la méthode " + string + " n'a pas enregistré. ");
 	}
 
 	public void updateInBase(Class<?> class1, String string) {
-		logger.error("ERREUR : Sur " + class1 + " la méthode " + string + " ne peut modifier. ");
+		logger.error("ERREUR : Sur " + class1 + " la méthode " + string + " n'a pas modifié. ");
 	}
 
 	public void deleteInBase(Class<?> class1, String string) {
-		logger.error("ERREUR : Sur " + class1 + " la méthode " + string + " ne peut supprimer. ");
+		logger.error("ERREUR : Sur " + class1 + " la méthode " + string + " n'a pas supprimé. ");
 	}
 
 }

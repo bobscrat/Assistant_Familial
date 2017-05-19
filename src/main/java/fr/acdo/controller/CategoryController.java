@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,17 +18,16 @@ import fr.acdo.exception.CustomException;
 import fr.acdo.log.ErrorMessages;
 import fr.acdo.service.CategoryService;
 
-@CrossOrigin(origins = "http://localhost:3000") // à supprimer en prod
+@CrossOrigin(origins = "*") // à supprimer en prod
 @RestController
 public class CategoryController {
 
 	ErrorMessages errMess = new ErrorMessages();
-
 	private CategoryService service;
 
 	@Autowired
-	public CategoryController(CategoryService service) {
-		this.service = service;
+	public CategoryController(CategoryService cateService) {
+		this.service = cateService;
 	}
 
 	@GetMapping("/api/categories")
@@ -43,7 +41,7 @@ public class CategoryController {
 		return list;
 	}
 
-	@GetMapping("/api/category/{id}")
+	@GetMapping("/api/categories/{id}")
 	public Category getCategory(@PathVariable Long id) {
 
 		Category category = service.getCategoryById(id);
@@ -56,41 +54,26 @@ public class CategoryController {
 		return category;
 	}
 
-	@PostMapping("/api/category")
+	@PostMapping("/api/categories")
 	public Category saveCategory(@RequestBody @Valid Category category) {
-		Category newCategory = null;
-		try {
-			newCategory = service.saveCategory(category);
-			errMess.saveInBase(getClass(), new Object() {
+		Category newCategory = service.saveCategory(category);
+		if (null == category) {
+			errMess.saveInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName());
-		} catch (Exception e) {
-			e.printStackTrace();
+			throw new CustomException("La catégorie n'a pas été enregistrée");
 		}
 		return newCategory;
 	}
 
-	@PutMapping("/api/category")
+	@PutMapping("/api/categories")
 	public Category updateCategory(@RequestBody @Valid Category category) {
-		Category newCategory = null;
-		try {
-			newCategory = service.saveCategory(category);
-			errMess.updateInBase(getClass(), new Object() {
+		Category newCategory = service.saveCategory(category);
+		if (null == category) {
+			errMess.updateInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName());
-		} catch (Exception e) {
-			e.printStackTrace();
+			throw new CustomException("La catégorie n'a pas été mise à jour.");
 		}
 		return newCategory;
-	}
-
-	@DeleteMapping("/api/category/{id}")
-	public void deleteCategory(@PathVariable Long id) {
-		try {
-			service.deleteCategory(id);
-			errMess.deleteInBase(getClass(), new Object() {
-			}.getClass().getEnclosingMethod().getName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }
