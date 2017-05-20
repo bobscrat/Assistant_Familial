@@ -11,27 +11,27 @@ import fr.acdo.repository.CategoryRepository;
 @Service
 public class CategoryService {
 
-	private CategoryRepository repoCat;
+	private CategoryRepository repo;
 
 	@Autowired
-	public CategoryService(CategoryRepository repoCat) {
-		this.repoCat = repoCat;
+	public CategoryService(CategoryRepository repo) {
+		this.repo = repo;
 	}
 
 	public List<Category> getAllCategories() {
-		return repoCat.findAll();
+		return repo.findAll();
 	}
 
 	public Category getCategoryById(Long id) {
-		return repoCat.findOne(id);
+		return repo.findOne(id);
 	}
 
 	public Category saveCategory(Category category) {
-		return repoCat.save(category);
+		return repo.save(category);
 	}
 
 	public void deleteCategory(Long id) {
-		repoCat.delete(id);
+		repo.delete(id);
 	}
 
 }

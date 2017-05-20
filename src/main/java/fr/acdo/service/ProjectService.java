@@ -11,27 +11,27 @@ import fr.acdo.repository.ProjectRepository;
 @Service
 public class ProjectService {
 
-	private ProjectRepository repoServ;
+	private ProjectRepository repo;
 
 	@Autowired
-	public ProjectService(ProjectRepository repoServ) {
-		this.repoServ = repoServ;
+	public ProjectService(ProjectRepository repo) {
+		this.repo = repo;
 	}
 
 	public List<Project> getAllProjects() {
-		return repoServ.findAll();
+		return repo.findAll();
 	}
 
 	public Project getProjectById(Long id) {
-		return repoServ.findOne(id);
+		return repo.findOne(id);
 	}
 
 	public Project saveProject(Project project) {
-		return repoServ.save(project);
+		return repo.save(project);
 	}
 
 	public void deleteProject(Long id) {
-		repoServ.delete(id);
+		repo.delete(id);
 	}
 
 }

@@ -6,79 +6,79 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.acdo.domain.Project;
+import fr.acdo.exception.CustomException;
+import fr.acdo.log.ErrorMessages;
 import fr.acdo.service.ProjectService;
 
-@CrossOrigin(origins = "http://localhost:3000") // à supprimer en prod
+@CrossOrigin(origins = "*") // à supprimer en prod
 @RestController
+@RequestMapping("/api/projects")
 public class ProjectController {
-
+	// instanciation des classes
+	private ErrorMessages errMess = new ErrorMessages();
 	private ProjectService service;
 
 	@Autowired
-	public ProjectController(ProjectService service) {
-		this.service = service;
+	public ProjectController(ProjectService cateService) {
+		this.service = cateService;
 	}
 
-	@GetMapping("/api/projects")
+	// liste des projets
+	@GetMapping
 	public List<Project> listProjects() {
-		List<Project> list = null;
-		try {
-			list = service.getAllProjects();
-		} catch (Exception e) {
-			e.printStackTrace();
+		List<Project> list = service.getAllProjects();
+		if (null == list) {
+			errMess.getAll(getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CustomException("La liste des projets n'a pas été trouvée");
 		}
 		return list;
 	}
 
-	@GetMapping("/api/project/{id}")
+	// récupération d'un projet
+	@GetMapping("/{id}")
 	public Project getProject(@PathVariable Long id) {
-		Project project = null;
-		try {
-			project = service.getProjectById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
+
+		Project project = service.getProjectById(id);
+		if (null == project) {
+			errMess.getById(this.getClass(), id, new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CustomException("Le projet avec l'id = " + id + " n'a pas été trouvé");
 		}
 		return project;
 	}
 
-	@PostMapping("/api/project")
+	// enregistrement d'un projet
+	@PostMapping
 	public Project saveProject(@RequestBody @Valid Project project) {
-		Project newProject = null;
-		try {
-			newProject = service.saveProject(project);
-		} catch (Exception e) {
-			e.printStackTrace();
+		Project newProject = service.saveProject(project);
+		if (null == project) {
+			errMess.saveInBase(this.getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CustomException("Le projet n'a pas été enregistré");
 		}
 		return newProject;
 	}
 
-	@PutMapping("/api/project")
+	// màj d'un projet
+	@PutMapping
 	public Project updateProject(@RequestBody @Valid Project project) {
-		Project newProject = null;
-		try {
-			newProject = service.saveProject(project);
-		} catch (Exception e) {
-			e.printStackTrace();
+		Project newProject = service.saveProject(project);
+		if (null == project) {
+			errMess.updateInBase(this.getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CustomException("Le projet n'a pas été mis à jour.");
 		}
 		return newProject;
-	}
-
-	@DeleteMapping("/api/project/{id}")
-	public void deleteProject(@PathVariable Long id) {
-		try {
-			service.deleteProject(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

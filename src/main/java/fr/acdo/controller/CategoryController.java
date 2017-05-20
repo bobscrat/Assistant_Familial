@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.acdo.domain.Category;
@@ -20,9 +21,10 @@ import fr.acdo.service.CategoryService;
 
 @CrossOrigin(origins = "*") // à supprimer en prod
 @RestController
+@RequestMapping("/api/categories")
 public class CategoryController {
-
-	ErrorMessages errMess = new ErrorMessages();
+	// on instancie les classes
+	private ErrorMessages errMess = new ErrorMessages();
 	private CategoryService service;
 
 	@Autowired
@@ -30,7 +32,8 @@ public class CategoryController {
 		this.service = cateService;
 	}
 
-	@GetMapping("/api/categories")
+	// méthodes suivantes : listes, recup un projet, enregistrement et màj
+	@GetMapping
 	public List<Category> listCategories() {
 		List<Category> list = service.getAllCategories();
 		if (null == list) {
@@ -41,7 +44,7 @@ public class CategoryController {
 		return list;
 	}
 
-	@GetMapping("/api/categories/{id}")
+	@GetMapping("/{id}")
 	public Category getCategory(@PathVariable Long id) {
 
 		Category category = service.getCategoryById(id);
@@ -54,7 +57,7 @@ public class CategoryController {
 		return category;
 	}
 
-	@PostMapping("/api/categories")
+	@PostMapping
 	public Category saveCategory(@RequestBody @Valid Category category) {
 		Category newCategory = service.saveCategory(category);
 		if (null == category) {
@@ -65,7 +68,7 @@ public class CategoryController {
 		return newCategory;
 	}
 
-	@PutMapping("/api/categories")
+	@PutMapping
 	public Category updateCategory(@RequestBody @Valid Category category) {
 		Category newCategory = service.saveCategory(category);
 		if (null == category) {

@@ -11,27 +11,27 @@ import fr.acdo.repository.PeriodicityRepository;
 @Service
 public class PeriodicityService {
 
-	private PeriodicityRepository repoPeriod;
+	private PeriodicityRepository repo;
 
 	@Autowired
-	public PeriodicityService(PeriodicityRepository repoPeriod) {
-		this.repoPeriod = repoPeriod;
+	public PeriodicityService(PeriodicityRepository repo) {
+		this.repo = repo;
 	}
 
 	public List<Periodicity> getAllPeriodicities() {
-		return repoPeriod.findAll();
+		return repo.findAll();
 	}
 
 	public Periodicity getPeriodicityById(Long id) {
-		return repoPeriod.findOne(id);
+		return repo.findOne(id);
 	}
 
 	public Periodicity savePeriodicity(Periodicity periodicity) {
-		return repoPeriod.save(periodicity);
+		return repo.save(periodicity);
 	}
 
 	public void deletePeriodicity(Long id) {
-		repoPeriod.delete(id);
+		repo.delete(id);
 	}
 
 }
