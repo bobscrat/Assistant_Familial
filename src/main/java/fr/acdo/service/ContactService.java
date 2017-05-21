@@ -11,27 +11,27 @@ import fr.acdo.repository.ContactRepository;
 @Service
 public class ContactService {
 
-	private ContactRepository repoContact;
+	private ContactRepository repo;
 
 	@Autowired
-	public ContactService(ContactRepository repoContact) {
-		this.repoContact = repoContact;
+	public ContactService(ContactRepository repo) {
+		this.repo = repo;
 	}
 
 	public List<Contact> getAllContacts() {
-		return repoContact.findAll();
+		return repo.findAll();
 	}
 
 	public Contact getContactById(Long id) {
-		return repoContact.findOne(id);
+		return repo.findOne(id);
 	}
 
-	public Contact addNewContact(Contact contact) {
-		return repoContact.save(contact);
+	public Contact saveContact(Contact contact) {
+		return repo.save(contact);
 	}
 
 	public void deleteContact(Long id) {
-		repoContact.delete(id);
+		repo.delete(id);
 	}
 
 }

@@ -32,7 +32,7 @@ public class FamilyService {
 		return repoFam.findOne(id);
 	}
 
-	public Family addFamily(Family family) {
+	public Family saveFamily(Family family) {
 		return repoFam.save(family);
 	}
 }
