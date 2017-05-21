@@ -6,27 +6,27 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import fr.acdo.domain.User;
-import fr.acdo.repository.UserDao;
+import fr.acdo.repository.UserRepository;
 
 @Service
 public class UserService {
 
-	private UserDao userDao;
+	private UserRepository repo;
 
-	public UserService(UserDao userDao) {
-		this.userDao = userDao;
+	public UserService(UserRepository repo) {
+		this.repo = repo;
 	}
 
 	public List<User> getAllUsers() {
-		return userDao.findAll();
+		return repo.findAll();
 	}
 
-	public User getById(@PathVariable Long id) {
-		return userDao.findOne(id);
+	public User getUserById(@PathVariable Long id) {
+		return repo.findOne(id);
 	}
 
-	public User addUser(User user) {
-		return userDao.save(user);
+	public User saveUser(User user) {
+		return repo.save(user);
 	}
 
 }

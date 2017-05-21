@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.acdo.domain.Role;
-import fr.acdo.repository.RoleDao;
+import fr.acdo.repository.RoleRepository;
 
 //Dans le service, on définit les méthodes du repository (=DAO)
 
@@ -14,11 +14,11 @@ import fr.acdo.repository.RoleDao;
 public class RoleService {
 
 	// Je fais appel à mon Role Dao
-	private RoleDao repo;
+	private RoleRepository repo;
 
 	// Constructeur qui est lancé automatiquement avec l'annotation
 	@Autowired
-	public RoleService(RoleDao role) {
+	public RoleService(RoleRepository role) {
 		this.repo = role;
 	}
 
@@ -28,7 +28,7 @@ public class RoleService {
 	}
 
 	// Méthode qui permet de récuperer un role avec id en parametre
-	public Role getById(Long id) {
+	public Role getRoleById(Long id) {
 		return repo.findOne(id);
 	}
 

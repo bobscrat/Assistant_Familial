@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,8 @@ public class User {
 	@GeneratedValue
 	private Long id;
 
-	@NotNull
+	@NotNull(message = "Le champ 'prénom' ne peut pas être vide")
+	@Size(min = 2, max = 45, message = "Le prénom dois comporter au moins 2 caractères")
 	private String firstName;
 
 	private LocalDate birthday;

@@ -6,6 +6,6 @@ import fr.acdo.domain.User;
 
 
 
-public interface UserDao extends JpaRepository <User, Long>{
+public interface UserRepository extends JpaRepository <User, Long>{
 
 }
