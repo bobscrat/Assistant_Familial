@@ -1,3 +1,4 @@
+// Olga
 package fr.acdo.exception;
 
 public class CustomException extends RuntimeException {

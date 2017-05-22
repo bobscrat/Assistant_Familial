@@ -1,6 +1,8 @@
+// Olga
 package fr.acdo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -16,13 +18,46 @@ public class EventService {
 		this.repo = repo;
 	}
 
-	public List<Event> getEventsWithFilters(Long familyId, Long userId, Long categoryId, Long projectId) {
-		// à compléter avec les filtres
+	public List<Event> getAllEvents() {
 		return repo.findAll();
 	}
 
-	public List<Event> getAllEvents() {
-		return repo.findAll();
+	public List<Event> getEventsWithFilters(Optional<Long> familyId, Optional<Long> userId, Optional<Long> categoryId,
+			Optional<Long> projectId) {
+		List<Event> list;
+		// on filtre par userId s'il est renseigné, sinon par familyId
+		// avec les filtres, event.done = true
+		if (userId.isPresent()) {
+			if (categoryId.isPresent() && projectId.isPresent()) {
+				list = repo.findByUserIdAndCategoryIdAndProjectIdAndDone(userId, categoryId, projectId, true);
+			} else if (categoryId.isPresent()) {
+				list = repo.findByUserIdAndCategoryIdAndDone(userId, categoryId, true);
+			} else if (projectId.isPresent()) {
+				list = repo.findByUserIdAndProjectIdAndDone(userId, projectId, true);
+			} else {
+				list = repo.findByUserIdAndDone(userId, true);
+			}
+		} else {
+			if (categoryId.isPresent() && projectId.isPresent()) {
+				list = repo.findByFamilyIdAndCategoryIdAndProjectIdAndDone(familyId, categoryId, projectId, true);
+			} else if (categoryId.isPresent()) {
+				list = repo.findByFamilyIdAndCategoryIdAndDone(familyId, categoryId, true);
+			} else if (projectId.isPresent()) {
+				list = repo.findByFamilyIdAndProjectIdAndDone(familyId, projectId, true);
+			} else {
+				list = repo.findByFamilyIdAndDone(familyId, true);
+			}
+		}
+		return list;
+	}
+
+	public List<Event> getEventsSearch(Long familyId, Boolean eventDone, Boolean userActive) {
+		return repo.findByFamilyIdAndDoneAndUserActive(familyId, eventDone, userActive);
+	}
+
+	public List<Event> getEventsPredefinedByCategory(Long categoryId) {
+		// event prédéfini : family_id = 1
+		return repo.findByFamilyIdAndCategoryId((long) 1, categoryId);
 	}
 
 	public Event getEventById(Long id) {
@@ -31,36 +66,6 @@ public class EventService {
 
 	public Event saveEvent(Event event) {
 		return repo.save(event);
-	}
-
-	// QUERY METHODS de la classe Repository
-
-	public List<Event> getEventsByUserId(Long id) {
-		return repo.findByUserId(id);
-	}
-
-	public List<Event> getEventsByCategoryId(Long id) {
-		return repo.findByCategoryId(id);
-	}
-
-	public List<Event> getEventsByProjectId(Long id) {
-		return repo.findByProjectId(id);
-	}
-
-	public List<Event> getEventsByUserIdAndCategoryId(Long idUser, Long idCategory) {
-		return repo.findByUserIdAndCategoryId(idUser, idCategory);
-	}
-
-	public List<Event> getEventsByUserIdAndProjectId(Long idUser, Long idProject) {
-		return repo.findByUserIdAndProjectId(idUser, idProject);
-	}
-
-	public List<Event> getEventsByUserIdAndCategoryIdAndProjectId(Long idUser, Long idCategory, Long idProject) {
-		return repo.findByUserIdAndCategoryIdAndProjectId(idUser, idCategory, idProject);
-	}
-
-	public List<Event> getEventsByCategoryIdAndProjectId(Long idCategory, Long idProject) {
-		return repo.findByCategoryIdAndProjectId(idCategory, idProject);
 	}
 
 }

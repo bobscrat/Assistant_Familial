@@ -1,6 +1,8 @@
+// Olga
 package fr.acdo.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,18 +12,26 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
 	// QUERY METHODS de la classe Repository
 
-	List<Event> findByUserId(Long id);
+	List<Event> findByUserIdAndCategoryIdAndProjectIdAndDone(Optional<Long> userId, Optional<Long> categoryId,
+			Optional<Long> projectId, boolean b);
 
-	List<Event> findByCategoryId(Long id);
+	List<Event> findByUserIdAndCategoryIdAndDone(Optional<Long> userId, Optional<Long> categoryId, boolean b);
 
-	List<Event> findByProjectId(Long id);
+	List<Event> findByUserIdAndProjectIdAndDone(Optional<Long> userId, Optional<Long> projectId, boolean b);
 
-	List<Event> findByUserIdAndCategoryId(Long idUser, Long idCategory);
+	List<Event> findByUserIdAndDone(Optional<Long> userId, boolean b);
 
-	List<Event> findByUserIdAndProjectId(Long idUser, Long idProject);
+	List<Event> findByFamilyIdAndCategoryIdAndProjectIdAndDone(Optional<Long> familyId, Optional<Long> categoryId,
+			Optional<Long> projectId, boolean b);
 
-	List<Event> findByUserIdAndCategoryIdAndProjectId(Long idUser, Long idCategory, Long idProject);
+	List<Event> findByFamilyIdAndCategoryIdAndDone(Optional<Long> familyId, Optional<Long> categoryId, boolean b);
 
-	List<Event> findByCategoryIdAndProjectId(Long idCategory, Long idProject);
+	List<Event> findByFamilyIdAndProjectIdAndDone(Optional<Long> familyId, Optional<Long> projectId, boolean b);
+
+	List<Event> findByFamilyIdAndDone(Optional<Long> familyId, boolean b);
+
+	List<Event> findByFamilyIdAndCategoryId(long l, Long categoryId);
+
+	List<Event> findByFamilyIdAndDoneAndUserActive(Long familyId, Boolean eventDone, Boolean userActive);
 
 }

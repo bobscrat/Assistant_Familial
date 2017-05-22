@@ -1,3 +1,4 @@
+// Olga
 package fr.acdo.domain;
 
 import javax.persistence.Column;

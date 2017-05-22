@@ -1,6 +1,8 @@
+// Olga
 package fr.acdo.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.acdo.domain.Event;
 import fr.acdo.exception.CustomException;
+import fr.acdo.log.ErrorMessages;
 import fr.acdo.service.EventService;
 
 @CrossOrigin(origins = "*") // à supprimer en prod
@@ -24,6 +27,7 @@ import fr.acdo.service.EventService;
 public class EventController {
 
 	private EventService service;
+	private ErrorMessages errMess = new ErrorMessages();
 
 	public EventController(EventService service) {
 		this.service = service;
@@ -33,17 +37,46 @@ public class EventController {
 	public List<Event> getEvents() {
 		List<Event> list = service.getAllEvents();
 		if (null == list) {
+			errMess.getAll(getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
 			throw new CustomException("La liste d'événements n'a pas été trouvée");
 		}
 		return list;
 	}
 
 	@GetMapping("/filters")
-	public List<Event> getEventsWithFilters(@RequestParam(value = "family") Long familyId,
-			@RequestParam(value = "user") Long userId, @RequestParam(value = "category") Long categoryId,
-			@RequestParam(value = "project") Long projectId) {
+	public List<Event> getEventsWithFilters(@RequestParam(value = "familyId") Optional<Long> familyId,
+			@RequestParam(value = "userId") Optional<Long> userId,
+			@RequestParam(value = "categoryId") Optional<Long> categoryId,
+			@RequestParam(value = "projectId") Optional<Long> projectId) {
 		List<Event> list = service.getEventsWithFilters(familyId, userId, categoryId, projectId);
 		if (null == list) {
+			errMess.getAll(getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CustomException("La liste d'événements n'a pas été trouvée");
+		}
+		return list;
+	}
+
+	@GetMapping("/search")
+	public List<Event> getEventsSearch(@RequestParam(value = "familyId") Long familyId,
+			@RequestParam(value = "eventDone") Boolean eventDone,
+			@RequestParam(value = "userActive") Boolean userActive) {
+		List<Event> list = service.getEventsSearch(familyId, eventDone, userActive);
+		if (null == list) {
+			errMess.getAll(getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CustomException("La liste d'événements n'a pas été trouvée");
+		}
+		return list;
+	}
+
+	@GetMapping("/predefined")
+	public List<Event> getEventsPredefined(@RequestParam(value = "categoryId") Long categoryId) {
+		List<Event> list = service.getEventsPredefinedByCategory(categoryId);
+		if (null == list) {
+			errMess.getAll(getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
 			throw new CustomException("La liste d'événements n'a pas été trouvée");
 		}
 		return list;
@@ -53,7 +86,9 @@ public class EventController {
 	public Event getEvent(@PathVariable Long id) {
 		Event event = service.getEventById(id);
 		if (null == event) {
-			throw new CustomException("L'événement avec l'id = " + id + " n'a pas été trouvé");
+			errMess.getById(this.getClass(), id, new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CustomException("L'événement n'a pas été trouvé");
 		}
 		return event;
 	}
@@ -62,6 +97,8 @@ public class EventController {
 	public Event createEvent(@RequestBody @Valid Event event) {
 		Event newEvent = service.saveEvent(event);
 		if (null == newEvent) {
+			errMess.saveInBase(getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
 			throw new CustomException("L'événement n'a pas été enregistré");
 		}
 		return newEvent;
@@ -71,7 +108,9 @@ public class EventController {
 	public Event updateEvent(@RequestBody @Valid Event event) {
 		Event newEvent = service.saveEvent(event);
 		if (null == newEvent) {
-			throw new CustomException("L'événement avec l'id = " + event.getId() + " n'a pas été mis à jour");
+			errMess.updateInBase(getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CustomException("L'événement n'a pas été mis à jour");
 		}
 		return newEvent;
 	}

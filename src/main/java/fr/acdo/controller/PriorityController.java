@@ -1,3 +1,4 @@
+// Olga
 package fr.acdo.controller;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import fr.acdo.domain.Priority;
 import fr.acdo.exception.CustomException;
+import fr.acdo.log.ErrorMessages;
 import fr.acdo.service.PriorityService;
 
 @CrossOrigin(origins = "*") // à supprimer en prod
@@ -23,6 +25,7 @@ import fr.acdo.service.PriorityService;
 public class PriorityController {
 
 	private PriorityService service;
+	private ErrorMessages errMess = new ErrorMessages();
 
 	public PriorityController(PriorityService service) {
 		this.service = service;
@@ -32,6 +35,8 @@ public class PriorityController {
 	public List<Priority> listPriorities() {
 		List<Priority> list = service.getAllPriorities();
 		if (null == list) {
+			errMess.getAll(getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
 			throw new CustomException("La liste de priorités n'a pas été trouvée");
 		}
 		return list;
@@ -41,7 +46,9 @@ public class PriorityController {
 	public Priority getPriority(@PathVariable Long id) {
 		Priority priority = service.getPriorityById(id);
 		if (null == priority) {
-			throw new CustomException("La priorité avec l'id = " + id + " n'a pas été trouvée");
+			errMess.getById(this.getClass(), id, new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CustomException("La priorité n'a pas été trouvée");
 		}
 		return priority;
 	}
@@ -50,6 +57,8 @@ public class PriorityController {
 	public Priority savePriority(@RequestBody @Valid Priority priority) {
 		Priority newPriority = service.savePriority(priority);
 		if (null == newPriority) {
+			errMess.saveInBase(getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
 			throw new CustomException("La priorité n'a pas été enregistrée");
 		}
 		return newPriority;
@@ -59,7 +68,9 @@ public class PriorityController {
 	public Priority updatePriority(@RequestBody @Valid Priority priority) {
 		Priority newPriority = service.savePriority(priority);
 		if (null == newPriority) {
-			throw new CustomException("La priorité avec l'id = " + priority.getId() + " n'a pas été mise à jour");
+			errMess.updateInBase(getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CustomException("La priorité n'a pas été mise à jour");
 		}
 		return newPriority;
 	}

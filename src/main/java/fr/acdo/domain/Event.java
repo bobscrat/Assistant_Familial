@@ -1,3 +1,4 @@
+// Olga
 package fr.acdo.domain;
 
 import java.sql.Timestamp;
@@ -32,9 +33,6 @@ public class Event {
 	@NotNull(message = "Le champ 'nom' ne peut pas être vide")
 	private String name;
 
-	@NotNull(message = "Le champ 'predéfini' ne peut pas être vide")
-	private Boolean predefined;
-
 	@NotNull(message = "Le champ 'réalisé' ne peut pas être vide")
 	private Boolean done;
 
@@ -60,6 +58,11 @@ public class Event {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	@NotNull(message = "Le champ 'family' ne peut pas être vide")
+	@ManyToOne
+	@JoinColumn(name = "family_id")
+	private Family family;
 
 	@NotNull(message = "Le champ 'categorie' ne peut pas être vide")
 	@ManyToOne
