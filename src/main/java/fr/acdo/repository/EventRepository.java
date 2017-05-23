@@ -12,14 +12,14 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
 	// QUERY METHODS de la classe Repository
 
-	List<Event> findByPersonIdAndCategoryIdAndProjectIdAndDone(Optional<Long> personId, Optional<Long> categoryId,
+	List<Event> findByUserIdAndCategoryIdAndProjectIdAndDone(Optional<Long> userId, Optional<Long> categoryId,
 			Optional<Long> projectId, boolean b);
 
-	List<Event> findByPersonIdAndCategoryIdAndDone(Optional<Long> personId, Optional<Long> categoryId, boolean b);
+	List<Event> findByUserIdAndCategoryIdAndDone(Optional<Long> userId, Optional<Long> categoryId, boolean b);
 
-	List<Event> findByPersonIdAndProjectIdAndDone(Optional<Long> personId, Optional<Long> projectId, boolean b);
+	List<Event> findByUserIdAndProjectIdAndDone(Optional<Long> userId, Optional<Long> projectId, boolean b);
 
-	List<Event> findByPersonIdAndDone(Optional<Long> userId, boolean b);
+	List<Event> findByUserIdAndDone(Optional<Long> userId, boolean b);
 
 	List<Event> findByFamilyIdAndCategoryIdAndProjectIdAndDone(Optional<Long> familyId, Optional<Long> categoryId,
 			Optional<Long> projectId, boolean b);
@@ -32,6 +32,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
 	List<Event> findByFamilyIdAndCategoryId(long l, Long categoryId);
 
-	List<Event> findByFamilyIdAndDoneAndPersonActive(Long familyId, Boolean eventDone, Boolean personActive);
+	List<Event> findByFamilyIdAndDoneAndUserActive(Long familyId, Boolean eventDone, Boolean userActive);
 
 }
