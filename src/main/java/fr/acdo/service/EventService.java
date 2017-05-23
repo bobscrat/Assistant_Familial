@@ -22,20 +22,20 @@ public class EventService {
 		return repo.findAll();
 	}
 
-	public List<Event> getEventsWithFilters(Optional<Long> familyId, Optional<Long> userId, Optional<Long> categoryId,
+	public List<Event> getEventsWithFilters(Optional<Long> familyId, Optional<Long> personId, Optional<Long> categoryId,
 			Optional<Long> projectId) {
 		List<Event> list;
-		// on filtre par userId s'il est renseigné, sinon par familyId
+		// on filtre par personId s'il est renseigné, sinon par familyId
 		// avec les filtres, event.done = true
-		if (userId.isPresent()) {
+		if (personId.isPresent()) {
 			if (categoryId.isPresent() && projectId.isPresent()) {
-				list = repo.findByUserIdAndCategoryIdAndProjectIdAndDone(userId, categoryId, projectId, true);
+				list = repo.findByPersonIdAndCategoryIdAndProjectIdAndDone(personId, categoryId, projectId, true);
 			} else if (categoryId.isPresent()) {
-				list = repo.findByUserIdAndCategoryIdAndDone(userId, categoryId, true);
+				list = repo.findByPersonIdAndCategoryIdAndDone(personId, categoryId, true);
 			} else if (projectId.isPresent()) {
-				list = repo.findByUserIdAndProjectIdAndDone(userId, projectId, true);
+				list = repo.findByPersonIdAndProjectIdAndDone(personId, projectId, true);
 			} else {
-				list = repo.findByUserIdAndDone(userId, true);
+				list = repo.findByPersonIdAndDone(personId, true);
 			}
 		} else {
 			if (categoryId.isPresent() && projectId.isPresent()) {
@@ -51,8 +51,8 @@ public class EventService {
 		return list;
 	}
 
-	public List<Event> getEventsSearch(Long familyId, Boolean eventDone, Boolean userActive) {
-		return repo.findByFamilyIdAndDoneAndUserActive(familyId, eventDone, userActive);
+	public List<Event> getEventsSearch(Long familyId, Boolean eventDone, Boolean personActive) {
+		return repo.findByFamilyIdAndDoneAndPersonActive(familyId, eventDone, personActive);
 	}
 
 	public List<Event> getEventsPredefinedByCategory(Long categoryId) {

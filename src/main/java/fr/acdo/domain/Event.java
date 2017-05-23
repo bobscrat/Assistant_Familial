@@ -57,7 +57,7 @@ public class Event {
 	@NotNull(message = "Le champ 'bénéficiaire' ne peut pas être vide")
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private User user;
+	private Person person;
 
 	@NotNull(message = "Le champ 'family' ne peut pas être vide")
 	@ManyToOne
