@@ -64,6 +64,12 @@ public class UserController {
 		return newUser;
 	}
 
+	@PostMapping("/log")
+	public User logUser(@RequestBody User user) {
+
+		return service.logUser(user);
+	}
+
 	@PutMapping
 	public User updateUser(@RequestBody User user) {
 		User newUser = service.saveUser(user);

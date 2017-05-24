@@ -17,6 +17,10 @@ public class UserService {
 		this.repo = repo;
 	}
 
+	public User logUser(User user) {
+		return repo.findByEmailAndPassword(user.getEmail(), user.getPassword());
+	}
+
 	public List<User> getAllUsers() {
 		return repo.findAll();
 	}
