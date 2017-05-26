@@ -23,7 +23,7 @@ public class RoleService {
 	}
 
 	// Je crée un méthode qui recupere dans une liste tous les roles
-	public List<Role> getAllRole() {
+	public List<Role> getAllRoles() {
 		return repo.findAll();
 	}
 
