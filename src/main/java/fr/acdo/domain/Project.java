@@ -22,10 +22,10 @@ public class Project {
 	private Long id;
 
 	@NotNull(message = "Le champ 'nom' ne peut pas être vide")
-	// @Unique(message = "Le champ 'nom' doit être unique")
 	@Size(min = 2, max = 45, message = "Le nom doit faire au moins 2 caractères")
 	private String name;
 
+	@NotNull(message = "La famille doit être renseignée")
 	@ManyToOne
 	@JoinColumn(name = "family_id")
 	private Family family;

@@ -10,7 +10,7 @@ import fr.acdo.domain.Event;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
 
-	// QUERY METHODS de la classe Repository
+	// QUERY METHODS from Repository
 
 	List<Event> findByUserIdAndCategoryIdAndProjectIdAndDone(Optional<Long> userId, Optional<Long> categoryId,
 			Optional<Long> projectId, boolean b);

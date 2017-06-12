@@ -29,11 +29,12 @@ import fr.acdo.domain.Event;
 import fr.acdo.log.ErrorMessages;
 import fr.acdo.service.EventService;
 
-@CrossOrigin(origins = "*") // à supprimer en prod
+@CrossOrigin(origins = "*") // to be deleted in prod
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
 
+	// instantiation of the classes
 	private EventService service;
 	private ErrorMessages errMess = new ErrorMessages();
 
@@ -41,13 +42,13 @@ public class EventController {
 		this.service = service;
 	}
 
+	// to get all events
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Event> listEvents() {
 		List<Event> list = null;
 		try {
 			list = service.getAllEvents();
-		} catch (CannotCreateTransactionException e) { // je catch si pas accès
-														// BDD
+		} catch (CannotCreateTransactionException e) { // no database access
 			errMess.getAll(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName());
 			throw new CannotCreateTransactionException("SERVEUR DEAD.");
@@ -55,6 +56,7 @@ public class EventController {
 		return list;
 	}
 
+	// to get events when applying filters
 	@GetMapping("/filters")
 	public List<Event> getEventsWithFilters(@RequestParam(value = "familyId") Optional<Long> familyId,
 			@RequestParam(value = "userId") Optional<Long> userId,
@@ -63,8 +65,7 @@ public class EventController {
 		List<Event> list = null;
 		try {
 			list = service.getEventsWithFilters(familyId, userId, categoryId, projectId);
-		} catch (CannotCreateTransactionException e) { // je catch si pas accès
-														// BDD
+		} catch (CannotCreateTransactionException e) { // no database access
 			errMess.getAll(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName());
 			throw new CannotCreateTransactionException("SERVEUR DEAD.");
@@ -72,6 +73,7 @@ public class EventController {
 		return list;
 	}
 
+	// to get events when doing a search
 	@GetMapping("/search")
 	public List<Event> getEventsSearch(@RequestParam(value = "familyId") Long familyId,
 			@RequestParam(value = "eventDone") Boolean eventDone,
@@ -79,8 +81,7 @@ public class EventController {
 		List<Event> list = null;
 		try {
 			list = service.getEventsSearch(familyId, eventDone, userActive);
-		} catch (CannotCreateTransactionException e) { // je catch si pas accès
-			// BDD
+		} catch (CannotCreateTransactionException e) { // no database access
 			errMess.getAll(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName());
 			throw new CannotCreateTransactionException("SERVEUR DEAD.");
@@ -88,13 +89,13 @@ public class EventController {
 		return list;
 	}
 
+	// to get predefined events by category
 	@GetMapping("/predefined")
 	public List<Event> getEventsPredefined(@RequestParam(value = "categoryId") Long categoryId) {
 		List<Event> list = null;
 		try {
 			list = service.getEventsPredefinedByCategory(categoryId);
-		} catch (CannotCreateTransactionException e) { // je catch si pas accès
-			// BDD
+		} catch (CannotCreateTransactionException e) { // no database access
 			errMess.getAll(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName());
 			throw new CannotCreateTransactionException("SERVEUR DEAD.");
@@ -102,6 +103,7 @@ public class EventController {
 		return list;
 	}
 
+	// to get an event
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Event getEvent(@PathVariable Long id) {
 
@@ -114,12 +116,12 @@ public class EventController {
 		return event;
 	}
 
+	// to save an event
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Event saveEvent(@RequestBody @Valid Event event, BindingResult bindingResult) {
-		// création en amont
 		Event newEvent = new Event();
-		// pour pouvoir gérer si @Valid renvoit des erreurs
+		// to manage @Valid exceptions
 		if (bindingResult.hasErrors()) {
 			errMess.saveInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), "Champs mal renseignés");
@@ -128,8 +130,7 @@ public class EventController {
 		}
 		try {
 			newEvent = service.saveEvent(event);
-		} catch (DataIntegrityViolationException e) {// on catch l'erreur de
-														// contrainte intégrité
+		} catch (DataIntegrityViolationException e) { // integrity violation
 			errMess.saveInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), e.toString());
 			throw new ConstraintViolationException("L'événement existe déjà", Collections.emptySet());
@@ -137,12 +138,12 @@ public class EventController {
 		return newEvent;
 	}
 
+	// to update an event
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Event updateEvent(@RequestBody @Valid Event event, BindingResult bindingResult) {
-		// création en amont
 		Event newEvent = new Event();
-		// pour pouvoir gérer si @Valid renvoit des erreurs
+		// to manage @Valid exceptions
 		if (bindingResult.hasErrors()) {
 			errMess.updateInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), " Champs mal renseignés");
@@ -151,8 +152,7 @@ public class EventController {
 		}
 		try {
 			newEvent = service.saveEvent(event);
-		} catch (DataIntegrityViolationException e) { // on catch l'erreur de
-														// contrainte intégrité
+		} catch (DataIntegrityViolationException e) { // integrity violation
 			errMess.updateInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), e.toString());
 			throw new ConstraintViolationException("L'événement existe déjà", Collections.emptySet());

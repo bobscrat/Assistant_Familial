@@ -38,12 +38,12 @@ public class Event {
 
 	private String comment;
 
-	// format du Json POST = "deadline": "2017-06-13T18:00:00" cad
+	// Json's format when POST = "deadline": "2017-06-13T18:00:00" as
 	// yyyy-mm-ddThh:mm:ss
-	// format du Json GET = "deadline":[2017,6,13,18,0] cad [yyyy,m,d,h,min]
+	// Json's format when GET = "deadline":[2017,6,13,18,0] as [yyyy,m,d,h,min]
 	private LocalDateTime deadline;
 
-	// Integer ou Float pour que la valeur puisse être nulle
+	// Integer or Float (instead of integer or float) so the value can be null
 	private Integer periodicityValue;
 	private Float estimatedBudget;
 	private Float realizedBudget;

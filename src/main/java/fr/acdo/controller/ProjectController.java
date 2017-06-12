@@ -3,6 +3,7 @@ package fr.acdo.controller;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,11 +29,11 @@ import fr.acdo.domain.Project;
 import fr.acdo.log.ErrorMessages;
 import fr.acdo.service.ProjectService;
 
-@CrossOrigin(origins = "*") // à supprimer en prod
+@CrossOrigin(origins = "*") // to be deleted in prod
 @RestController
 @RequestMapping("/api/projects")
 public class ProjectController {
-	// instanciation des classes
+	// instantiation of the classes
 	private ErrorMessages errMess = new ErrorMessages();
 	private ProjectService service;
 
@@ -40,14 +42,13 @@ public class ProjectController {
 		this.service = cateService;
 	}
 
-	// liste des projets
+	// to get all projects
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Project> listProjects() {
 		List<Project> list = null;
 		try {
 			list = service.getAllProjects();
-		} catch (CannotCreateTransactionException e) { // je catch si pas accès
-														// BDD
+		} catch (CannotCreateTransactionException e) { // no database access
 			errMess.getAll(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName());
 			throw new CannotCreateTransactionException("SERVEUR DEAD.");
@@ -55,7 +56,21 @@ public class ProjectController {
 		return list;
 	}
 
-	// récupération d'un projet
+	// to get projects when applying filters
+	@GetMapping("/filters")
+	public List<Project> getProjectsWithFilters(@RequestParam(value = "familyId") Optional<Long> familyId) {
+		List<Project> list = null;
+		try {
+			list = service.getProjectsWithFilters(familyId);
+		} catch (CannotCreateTransactionException e) { // no database access
+			errMess.getAll(this.getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CannotCreateTransactionException("SERVEUR DEAD.");
+		}
+		return list;
+	}
+
+	// to get a project
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Project getProject(@PathVariable Long id) {
 		Project project = service.getProjectById(id);
@@ -67,13 +82,12 @@ public class ProjectController {
 		return project;
 	}
 
-	// enregistrement d'un projet
+	// to save a project
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Project saveProject(@RequestBody @Valid Project project, BindingResult bindingResult) {
-		// création en amont
 		Project newProject = new Project();
-		// pour pouvoir gérer si @Valid renvoit des erreurs
+		// to manage @Valid exceptions
 		if (bindingResult.hasErrors()) {
 			errMess.saveInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), "Champs mal renseignés");
@@ -81,22 +95,21 @@ public class ProjectController {
 		}
 		try {
 			newProject = service.saveProject(project);
-		} catch (DataIntegrityViolationException e) {// on catch l'erreur de
-														// contrainte intégrité
+		} catch (DataIntegrityViolationException e) {// integrity violation
 			errMess.saveInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), e.toString());
 			throw new ConstraintViolationException("Le projet existe déjà", Collections.emptySet());
 		}
 		return newProject;
+
 	}
 
-	// màj d'un projet
+	// to update a project
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Project updateProject(@RequestBody @Valid Project project, BindingResult bindingResult) {
-		// création en amont
 		Project newProject = new Project();
-		// pour pouvoir gérer si @Valid renvoit des erreurs
+		// to manage @Valid exceptions
 		if (bindingResult.hasErrors()) {
 			errMess.updateInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), " Champs mal renseignés");
@@ -104,8 +117,7 @@ public class ProjectController {
 		}
 		try {
 			newProject = service.saveProject(project);
-		} catch (DataIntegrityViolationException e) { // on catch l'erreur de
-														// contrainte intégrité
+		} catch (DataIntegrityViolationException e) { // integrity violation
 			errMess.updateInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), e.toString());
 			throw new ConstraintViolationException("Le projet existe déjà", Collections.emptySet());

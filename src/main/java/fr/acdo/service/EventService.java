@@ -25,8 +25,8 @@ public class EventService {
 	public List<Event> getEventsWithFilters(Optional<Long> familyId, Optional<Long> userId, Optional<Long> categoryId,
 			Optional<Long> projectId) {
 		List<Event> list;
-		// on filtre par userId s'il est renseigné, sinon par familyId
-		// avec les filtres, event.done = true
+		// filter by userId if it exists, else by familyId
+		// when there is a filter, event.done = true by default
 		if (userId.isPresent()) {
 			if (categoryId.isPresent() && projectId.isPresent()) {
 				list = repo.findByUserIdAndCategoryIdAndProjectIdAndDone(userId, categoryId, projectId, true);
@@ -56,7 +56,7 @@ public class EventService {
 	}
 
 	public List<Event> getEventsPredefinedByCategory(Long categoryId) {
-		// event prédéfini : family_id = 1
+		// predefined event : family_id = 1
 		return repo.findByFamilyIdAndCategoryId((long) 1, categoryId);
 	}
 
