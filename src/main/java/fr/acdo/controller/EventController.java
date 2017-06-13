@@ -42,7 +42,11 @@ public class EventController {
 		this.service = service;
 	}
 
-	// to get all events
+	/**
+	 * Get all Events
+	 * 
+	 * @return a list of Events
+	 */
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Event> listEvents() {
 		List<Event> list = null;
@@ -56,7 +60,15 @@ public class EventController {
 		return list;
 	}
 
-	// to get events when applying filters
+	/**
+	 * Get a list of Events when applying filters
+	 * 
+	 * @param familyId
+	 * @param userId
+	 * @param categoryId
+	 * @param projectId
+	 * @return a list of Events
+	 */
 	@GetMapping("/filters")
 	public List<Event> getEventsWithFilters(@RequestParam(value = "familyId") Optional<Long> familyId,
 			@RequestParam(value = "userId") Optional<Long> userId,
@@ -73,7 +85,14 @@ public class EventController {
 		return list;
 	}
 
-	// to get events when doing a search
+	/**
+	 * Get Events as a search result
+	 * 
+	 * @param familyId
+	 * @param eventDone
+	 * @param UserActive
+	 * @return a list of Events
+	 */
 	@GetMapping("/search")
 	public List<Event> getEventsSearch(@RequestParam(value = "familyId") Long familyId,
 			@RequestParam(value = "eventDone") Boolean eventDone,
@@ -89,7 +108,12 @@ public class EventController {
 		return list;
 	}
 
-	// to get predefined events by category
+	/**
+	 * Get only predefined Events, by category
+	 * 
+	 * @param categoryId
+	 * @return a list of Events
+	 */
 	@GetMapping("/predefined")
 	public List<Event> getEventsPredefined(@RequestParam(value = "categoryId") Long categoryId) {
 		List<Event> list = null;
@@ -103,7 +127,12 @@ public class EventController {
 		return list;
 	}
 
-	// to get an event
+	/**
+	 * Get an Event by id
+	 * 
+	 * @param id
+	 * @return an Event
+	 */
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Event getEvent(@PathVariable Long id) {
 
@@ -116,7 +145,12 @@ public class EventController {
 		return event;
 	}
 
-	// to save an event
+	/**
+	 * Create an Event in the database
+	 * 
+	 * @param event
+	 * @return an Event
+	 */
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Event saveEvent(@RequestBody @Valid Event event, BindingResult bindingResult) {
@@ -138,7 +172,12 @@ public class EventController {
 		return newEvent;
 	}
 
-	// to update an event
+	/**
+	 * Update an Event in the database
+	 * 
+	 * @param event
+	 * @return an Event
+	 */
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Event updateEvent(@RequestBody @Valid Event event, BindingResult bindingResult) {

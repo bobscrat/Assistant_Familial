@@ -38,9 +38,10 @@ public class Event {
 
 	private String comment;
 
-	// Json's format when POST = "deadline": "2017-06-13T18:00:00" as
+	// if POST then Json's format = "deadline": "2017-06-13T18:00:00" as
 	// yyyy-mm-ddThh:mm:ss
-	// Json's format when GET = "deadline":[2017,6,13,18,0] as [yyyy,m,d,h,min]
+	// if GET then Json's format = "deadline":[2017,6,13,18,0] as
+	// [yyyy,m,d,h,min]
 	private LocalDateTime deadline;
 
 	// Integer or Float (instead of integer or float) so the value can be null
