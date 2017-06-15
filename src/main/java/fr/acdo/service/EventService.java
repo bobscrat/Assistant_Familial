@@ -59,7 +59,7 @@ public class EventService {
 			} else if (projectId.isPresent()) {
 				list = repo.findByFamilyIdAndProjectIdAndDone(familyId, projectId, true);
 			} else {
-				list = repo.findByFamilyIdAndDone(familyId, true);
+				list = repo.findByFamilyIdAndDone(familyId, false);
 			}
 		}
 		return list;
