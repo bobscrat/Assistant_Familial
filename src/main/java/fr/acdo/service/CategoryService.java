@@ -1,7 +1,6 @@
 package fr.acdo.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,10 +32,6 @@ public class CategoryService {
 
 	public void deleteCategory(Long id) {
 		repo.delete(id);
-	}
-
-	public List<Category> getCategoriesWithFilters(Optional<Long> id) {
-		return repo.findByFamilyId(id);
 	}
 
 }

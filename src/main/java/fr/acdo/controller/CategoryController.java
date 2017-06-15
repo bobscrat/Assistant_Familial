@@ -3,7 +3,6 @@ package fr.acdo.controller;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,11 +27,11 @@ import fr.acdo.domain.Category;
 import fr.acdo.log.ErrorMessages;
 import fr.acdo.service.CategoryService;
 
-@CrossOrigin(origins = "*") // to be deleted in prod
+@CrossOrigin(origins = "*") // à supprimer en prod
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
-	// instantiation of the classes
+	// on instancie les classes
 	private ErrorMessages errMess = new ErrorMessages();
 	private CategoryService service;
 
@@ -42,13 +40,15 @@ public class CategoryController {
 		this.service = service;
 	}
 
-	// to get all categories
+	// méthodes suivantes : listes, recup un projet, enregistrement et màj
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Category> listCategories() {
 		List<Category> list = null;
 		try {
 			list = service.getAllCategories();
-		} catch (CannotCreateTransactionException e) { // no database access
+		} catch (CannotCreateTransactionException e) { // je catch si pas accès
+														// BDD
+			System.out.println("Je dis que la BDD est DEAD");
 			errMess.getAll(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName());
 			throw new CannotCreateTransactionException("SERVEUR DEAD.");
@@ -56,22 +56,6 @@ public class CategoryController {
 		return list;
 	}
 
-	// to get categories when applying filters
-	@GetMapping("/filters")
-	public List<Category> getCategoriesWithFilters(@RequestParam(value = "familyId") Optional<Long> familyId) {
-		List<Category> list = null;
-		try {
-			list = service.getCategoriesWithFilters(familyId);
-			System.out.print("filtre");
-		} catch (CannotCreateTransactionException e) { // no database access
-			errMess.getAll(this.getClass(), new Object() {
-			}.getClass().getEnclosingMethod().getName());
-			throw new CannotCreateTransactionException("SERVEUR DEAD.");
-		}
-		return list;
-	}
-
-	// to get a project
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Category getCategory(@PathVariable Long id) {
 		Category category = service.getCategoryById(id);
@@ -83,45 +67,61 @@ public class CategoryController {
 		return category;
 	}
 
-	// to save a project
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Category saveCategory(@RequestBody @Valid Category category, BindingResult bindingResult) {
+		// création en amont
 		Category newCategory = new Category();
-		// to manage @Valid exceptions
+		// pour pouvoir gérer si @Valid renvoit des erreurs
 		if (bindingResult.hasErrors()) {
+			System.out.println("si un des deux est NULL");
 			errMess.saveInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), "Champs mal renseignés");
 			throw new IllegalArgumentException(
 					"La catégorie n'a pas été enregistrée car au moins un champ est invalide.");
 		}
 		try {
+			System.out.println("premier acte de création");
 			newCategory = service.saveCategory(category);
-		} catch (DataIntegrityViolationException e) {// integrity violation
+			System.out.println("deuxième acte après action du service");
+
+		} catch (DataIntegrityViolationException e) {// on catch l'erreur de
+														// contrainte intégrité
+			System.out.println("EXISTE DEJAAAAAA avant le log");
 			errMess.saveInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), e.toString());
+			System.out.println("EXISTE DEJAAAAAA avant le throw");
+			System.out.println(e.getLocalizedMessage());
 			throw new ConstraintViolationException("La catégorie existe déjà", Collections.emptySet());
 		}
 		return newCategory;
 	}
 
-	// to update a project
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Category updateCategory(@RequestBody @Valid Category category, BindingResult bindingResult) {
+		// création en amont
 		Category newCategory = new Category();
-		// to manage @Valid exceptions
+		// pour pouvoir gérer si @Valid renvoit des erreurs
 		if (bindingResult.hasErrors()) {
+			System.out.println("si un des deux est NULL");
 			errMess.updateInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), " Champs mal renseignés");
 			throw new IllegalArgumentException(
 					"La catégorie n'a pas été enregistrée car au moins un champ est invalide.");
 		}
 		try {
+			System.out.println("premier acte de création");
 			newCategory = service.saveCategory(category);
-		} catch (DataIntegrityViolationException e) { // integrity violation
+			System.out.println("deuxième acte après action du service");
+
+		} catch (DataIntegrityViolationException e) { // on catch l'erreur de
+														// contrainte intégrité
+			System.out.println("EXISTE DEJAAAAAA avant le log");
 			errMess.updateInBase(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName(), e.toString());
+			System.out.println("EXISTE DEJAAAAAA avant le throw");
+			System.out.println(e.getLocalizedMessage());
 			throw new ConstraintViolationException("La catégorie existe déjà", Collections.emptySet());
 		}
 		return newCategory;
