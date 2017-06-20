@@ -1,4 +1,3 @@
-// Olga
 package fr.acdo.controller;
 
 import java.util.Collections;
@@ -29,6 +28,9 @@ import fr.acdo.domain.Event;
 import fr.acdo.log.ErrorMessages;
 import fr.acdo.service.EventService;
 
+/**
+ * @author Olga
+ */
 @CrossOrigin(origins = "*") // to be deleted in prod
 @RestController
 @RequestMapping("/api/events")
@@ -71,12 +73,12 @@ public class EventController {
 	 */
 	@GetMapping("/filters")
 	public List<Event> getEventsWithFilters(@RequestParam(value = "familyId") Optional<Long> familyId,
-			@RequestParam(value = "userId") Optional<Long> userId,
+			@RequestParam(value = "memberId") Optional<Long> memberId,
 			@RequestParam(value = "categoryId") Optional<Long> categoryId,
 			@RequestParam(value = "projectId") Optional<Long> projectId) {
 		List<Event> list = null;
 		try {
-			list = service.getEventsWithFilters(familyId, userId, categoryId, projectId);
+			list = service.getEventsWithFilters(familyId, memberId, categoryId, projectId);
 		} catch (CannotCreateTransactionException e) { // no database access
 			errMess.getAll(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName());

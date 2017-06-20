@@ -1,4 +1,3 @@
-// Olga
 package fr.acdo.domain;
 
 import java.sql.Timestamp;
@@ -20,6 +19,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author Olga
+ */
 @Entity
 @Getter
 @Setter

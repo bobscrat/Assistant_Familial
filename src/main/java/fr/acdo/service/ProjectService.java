@@ -35,8 +35,14 @@ public class ProjectService {
 		repo.delete(id);
 	}
 
-	public List<Project> getProjectsWithFilters(Optional<Long> id) {
-		return repo.findByFamilyId(id);
+	public List<Project> getProjectsWithFilters(Long familyId, Optional<Boolean> getInactive) {
+		List<Project> list;
+		if (getInactive.isPresent()) {
+			list = repo.findByFamilyId(familyId);
+		} else {
+			list = repo.findByFamilyIdAndHasOnlyActiveEvent(familyId);
+		}
+		return list;
 	}
 
 }

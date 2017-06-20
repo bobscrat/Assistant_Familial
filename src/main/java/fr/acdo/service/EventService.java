@@ -1,4 +1,3 @@
-// Olga
 package fr.acdo.service;
 
 import java.util.List;
@@ -9,6 +8,9 @@ import org.springframework.stereotype.Service;
 import fr.acdo.domain.Event;
 import fr.acdo.repository.EventRepository;
 
+/**
+ * @author Olga
+ */
 @Service
 public class EventService {
 
@@ -31,35 +33,35 @@ public class EventService {
 	 * Get a list of Events when applying filters
 	 * 
 	 * @param familyId
-	 * @param userId
+	 * @param memberId
 	 * @param categoryId
 	 * @param projectId
 	 * @return a list of Events
 	 */
-	public List<Event> getEventsWithFilters(Optional<Long> familyId, Optional<Long> userId, Optional<Long> categoryId,
+	public List<Event> getEventsWithFilters(Optional<Long> familyId, Optional<Long> memberId, Optional<Long> categoryId,
 			Optional<Long> projectId) {
 		List<Event> list;
-		// filter by userId if it exists, else by familyId
-		// when there is a filter, event.done = true by default
-		if (userId.isPresent()) {
+		// filter by memberId if it exists, else by familyId
+		// when there is a filter, event.done = false by default (=not done)
+		if (memberId.isPresent()) {
 			if (categoryId.isPresent() && projectId.isPresent()) {
-				list = repo.findByUserIdAndCategoryIdAndProjectIdAndDone(userId, categoryId, projectId, true);
+				list = repo.findByUserIdAndCategoryIdAndProjectIdAndDone(memberId, categoryId, projectId, false);
 			} else if (categoryId.isPresent()) {
-				list = repo.findByUserIdAndCategoryIdAndDone(userId, categoryId, true);
+				list = repo.findByUserIdAndCategoryIdAndDone(memberId, categoryId, false);
 			} else if (projectId.isPresent()) {
-				list = repo.findByUserIdAndProjectIdAndDone(userId, projectId, true);
+				list = repo.findByUserIdAndProjectIdAndDone(memberId, projectId, false);
 			} else {
-				list = repo.findByUserIdAndDone(userId, true);
+				list = repo.findByUserIdAndDone(memberId, false);
 			}
 		} else {
 			if (categoryId.isPresent() && projectId.isPresent()) {
-				list = repo.findByFamilyIdAndCategoryIdAndProjectIdAndDone(familyId, categoryId, projectId, true);
+				list = repo.findByFamilyIdAndCategoryIdAndProjectIdAndDone(familyId, categoryId, projectId, false);
 			} else if (categoryId.isPresent()) {
-				list = repo.findByFamilyIdAndCategoryIdAndDone(familyId, categoryId, true);
+				list = repo.findByFamilyIdAndCategoryIdAndDone(familyId, categoryId, false);
 			} else if (projectId.isPresent()) {
-				list = repo.findByFamilyIdAndProjectIdAndDone(familyId, projectId, true);
+				list = repo.findByFamilyIdAndProjectIdAndDone(familyId, projectId, false);
 			} else {
-				list = repo.findByFamilyIdAndDone(familyId, true);
+				list = repo.findByFamilyIdAndDone(familyId, false);
 			}
 		}
 		return list;

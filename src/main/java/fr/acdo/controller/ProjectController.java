@@ -58,10 +58,11 @@ public class ProjectController {
 
 	// to get projects when applying filters
 	@GetMapping("/filters")
-	public List<Project> getProjectsWithFilters(@RequestParam(value = "familyId") Optional<Long> familyId) {
+	public List<Project> getProjectsWithFilters(@RequestParam(value = "familyId") Long familyId,
+			@RequestParam(value = "getInactive") Optional<Boolean> getInactive) {
 		List<Project> list = null;
 		try {
-			list = service.getProjectsWithFilters(familyId);
+			list = service.getProjectsWithFilters(familyId, getInactive);
 		} catch (CannotCreateTransactionException e) { // no database access
 			errMess.getAll(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName());

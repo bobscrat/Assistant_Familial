@@ -1,4 +1,4 @@
-// Olga
+
 package fr.acdo.repository;
 
 import java.util.List;
@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import fr.acdo.domain.Event;
 
+/**
+ * @author Olga
+ */
 public interface EventRepository extends JpaRepository<Event, Long> {
 
 	// QUERY METHODS from Repository
