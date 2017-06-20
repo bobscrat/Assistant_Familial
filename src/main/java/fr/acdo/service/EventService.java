@@ -40,26 +40,26 @@ public class EventService {
 			Optional<Long> projectId) {
 		List<Event> list;
 		// filter by userId if it exists, else by familyId
-		// when there is a filter, event.done = true by default
+		// when there is a filter, event.done = false by default
 		if (userId.isPresent()) {
 			if (categoryId.isPresent() && projectId.isPresent()) {
-				list = repo.findByUserIdAndCategoryIdAndProjectIdAndDone(userId, categoryId, projectId, true);
+				list = repo.findByUserIdAndCategoryIdAndProjectIdAndDone(userId, categoryId, projectId, false);
 			} else if (categoryId.isPresent()) {
-				list = repo.findByUserIdAndCategoryIdAndDone(userId, categoryId, true);
+				list = repo.findByUserIdAndCategoryIdAndDone(userId, categoryId, false);
 			} else if (projectId.isPresent()) {
-				list = repo.findByUserIdAndProjectIdAndDone(userId, projectId, true);
+				list = repo.findByUserIdAndProjectIdAndDone(userId, projectId, false);
 			} else {
-				list = repo.findByUserIdAndDone(userId, true);
+				list = repo.findByUserIdAndDone(userId, false);
 			}
 		} else {
 			if (categoryId.isPresent() && projectId.isPresent()) {
-				list = repo.findByFamilyIdAndCategoryIdAndProjectIdAndDone(familyId, categoryId, projectId, true);
+				list = repo.findByFamilyIdAndCategoryIdAndProjectIdAndDone(familyId, categoryId, projectId, false);
 			} else if (categoryId.isPresent()) {
-				list = repo.findByFamilyIdAndCategoryIdAndDone(familyId, categoryId, true);
+				list = repo.findByFamilyIdAndCategoryIdAndDone(familyId, categoryId, false);
 			} else if (projectId.isPresent()) {
-				list = repo.findByFamilyIdAndProjectIdAndDone(familyId, projectId, true);
+				list = repo.findByFamilyIdAndProjectIdAndDone(familyId, projectId, false);
 			} else {
-				list = repo.findByFamilyIdAndDone(familyId, true);
+				list = repo.findByFamilyIdAndDone(familyId, false);
 			}
 		}
 		return list;
