@@ -1,6 +1,5 @@
 package fr.acdo.exception;
 
-import java.rmi.server.ServerNotActiveException;
 import java.util.NoSuchElementException;
 
 import javax.validation.ConstraintViolationException;
@@ -25,10 +24,8 @@ public class GlobalControllerExceptionHandler {
 	private static final Logger logger = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
 
 	/*
-	 * ERREUR SERVEUR
+	 * SERVER ERROR
 	 */
-	// Serveur DEAD qui sert donc lorsque les listes ne sont pas accessibles
-	// vu qu'elles doivent toujours renvoyer quelque chose (vide ou non)
 	@ExceptionHandler(value = { CannotCreateTransactionException.class })
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ApiErrorResponse cannotCreateTransactionException(CannotCreateTransactionException ex) {
@@ -36,21 +33,14 @@ public class GlobalControllerExceptionHandler {
 		return new ApiErrorResponse(500, 500404, ex.getMessage());
 	}
 
-	// contrainte d'unicité (clé primaire ou index UNIQUE) n'est pas respectée.
+	// primary key or UNIQUE index error
 	@ExceptionHandler(value = { ConstraintViolationException.class })
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ApiErrorResponse constraintViolationException(ConstraintViolationException ex) {
 		return new ApiErrorResponse(500, 5001, ex.getMessage());
 	}
 
-	// ma première version pour si liste vide; je la laisse pour le moment
-	@ExceptionHandler(value = { ServerNotActiveException.class })
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public ApiErrorResponse listEmptyException(Exception ex) {
-		return new ApiErrorResponse(500, 5002, ex.getMessage());
-	}
-
-	// l'élément n'a pas été trouvé
+	// element not find
 	@ExceptionHandler(value = { NoSuchElementException.class })
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ApiErrorResponse notExistException(Exception ex) {
@@ -58,7 +48,7 @@ public class GlobalControllerExceptionHandler {
 	}
 
 	/*
-	 * MAUVAISE REQUETE
+	 * BAD REQUEST
 	 */
 	@ExceptionHandler(value = { IllegalArgumentException.class })
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -67,7 +57,7 @@ public class GlobalControllerExceptionHandler {
 	}
 
 	/*
-	 * ERREUR 404
+	 * 404 ERROR
 	 */
 	@ExceptionHandler(value = { NoHandlerFoundException.class })
 	@ResponseStatus(HttpStatus.NOT_FOUND)
@@ -76,7 +66,7 @@ public class GlobalControllerExceptionHandler {
 	}
 
 	/*
-	 * ERREUR D'ACCES
+	 * ACCES ERROR
 	 */
 	// @ExceptionHandler(value = { AccessDeniedException.class })
 	//
@@ -92,7 +82,7 @@ public class GlobalControllerExceptionHandler {
 	//
 
 	/*
-	 * ERREUR TEAPOT
+	 * TEAPOT ERROR
 	 */
 	// Any attempt to brew coffee with a teapot should result in the error code
 	// "418 I'm a teapot".
