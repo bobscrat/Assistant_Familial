@@ -8,11 +8,11 @@ public class ErrorMessages {
 	private static final Logger logger = LoggerFactory.getLogger(ErrorMessages.class);
 
 	public void getAll(Class<?> class1, String string) {
-		logger.error("***ERREUR*** : Sur " + class1 + " la méthode " + string + " ne renvoit rien. ");
+		logger.error("***ERREUR*** : Sur " + class1 + " la méthode " + string + " ne renvoie rien. ");
 	}
 
 	public void getById(Class<?> class1, Long id, String string) {
-		logger.error("***ERREUR*** : Sur " + class1 + " la méthode " + string + " ne renvoit rien pour l'id " + id);
+		logger.error("***ERREUR*** : Sur " + class1 + " la méthode " + string + " ne renvoie rien pour l'id " + id);
 	}
 
 	public void saveInBase(Class<?> class1, String string, String e) {
