@@ -30,6 +30,8 @@ public class UserService {
 	}
 
 	public User saveUser(User user) {
+		user.setActive(true);
+		user.setImage("12-32x32.png");
 		return repo.save(user);
 	}
 
