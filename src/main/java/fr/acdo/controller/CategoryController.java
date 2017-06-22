@@ -3,6 +3,7 @@ package fr.acdo.controller;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +53,20 @@ public class CategoryController {
 		List<Category> list = null;
 		try {
 			list = service.getAllCategories();
+		} catch (CannotCreateTransactionException e) { // no database access
+			errMess.getAll(this.getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CannotCreateTransactionException("SERVEUR DEAD.");
+		}
+		return list;
+	}
+
+	@GetMapping("/filters")
+	public List<Category> getCategoriesWithFilters(@RequestParam(value = "familyId") Long familyId,
+			@RequestParam(value = "getPredefined") Optional<Boolean> getPredefined) {
+		List<Category> list = null;
+		try {
+			list = service.getCategoriesWithFilters(familyId, getPredefined);
 		} catch (CannotCreateTransactionException e) { // no database access
 			errMess.getAll(this.getClass(), new Object() {
 			}.getClass().getEnclosingMethod().getName());

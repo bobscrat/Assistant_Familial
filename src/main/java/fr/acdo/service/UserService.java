@@ -1,6 +1,7 @@
 package fr.acdo.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,16 @@ public class UserService {
 		user.setActive(true);
 		user.setImage("12-32x32.png");
 		return repo.save(user);
+	}
+
+	public List<User> getUsersWithFilters(Long familyId, Optional<Boolean> isActive) {
+		List<User> list;
+		if (isActive.isPresent()) {
+			list = repo.findByFamilyIdAndActive(familyId, isActive.get());
+		} else {
+			list = repo.findByFamilyId(familyId);
+		}
+		return list;
 	}
 
 }
