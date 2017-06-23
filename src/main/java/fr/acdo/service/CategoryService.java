@@ -39,9 +39,9 @@ public class CategoryService {
 		List<Category> list;
 		if (getPredefined.isPresent() && getPredefined.get()) {
 			// predefined categories : familyId = 1
-			list = repo.findByFamilyIdOrFamilyId(familyId, (long) 1);
+			list = repo.findByFamilyIdOrFamilyIdOrderByName(familyId, (long) 1);
 		} else {
-			list = repo.findByFamilyId(familyId);
+			list = repo.findByFamilyIdOrderByName(familyId);
 		}
 		return list;
 	}

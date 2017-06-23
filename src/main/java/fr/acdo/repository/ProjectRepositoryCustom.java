@@ -6,5 +6,5 @@ import fr.acdo.domain.Project;
 
 public interface ProjectRepositoryCustom {
 
-	List<Project> findByFamilyIdAndHasOnlyActiveEvent(Long familyId);
+	List<Project> findByFamilyIdAndHasOnlyActiveEventOrderByName(Long familyId);
 }

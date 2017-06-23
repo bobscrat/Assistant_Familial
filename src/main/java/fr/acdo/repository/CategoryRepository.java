@@ -12,4 +12,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 	List<Category> findByFamilyIdOrFamilyId(Long familyId, long l);
 
+	List<Category> findByFamilyIdOrderByName(Long familyId);
+
+	List<Category> findByFamilyIdOrFamilyIdOrderByName(Long familyId, long l);
+
 }

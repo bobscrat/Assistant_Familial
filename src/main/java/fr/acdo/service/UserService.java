@@ -39,9 +39,9 @@ public class UserService {
 	public List<User> getUsersWithFilters(Long familyId, Optional<Boolean> isActive) {
 		List<User> list;
 		if (isActive.isPresent()) {
-			list = repo.findByFamilyIdAndActive(familyId, isActive.get());
+			list = repo.findByFamilyIdAndActiveOrderByFirstName(familyId, isActive.get());
 		} else {
-			list = repo.findByFamilyId(familyId);
+			list = repo.findByFamilyIdOrderByFirstName(familyId);
 		}
 		return list;
 	}

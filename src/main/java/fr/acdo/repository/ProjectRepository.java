@@ -10,4 +10,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long>, Project
 
 	List<Project> findByFamilyId(Long familyId);
 
+	List<Project> findByFamilyIdOrderByName(Long familyId);
+
 }

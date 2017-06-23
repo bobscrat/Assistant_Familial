@@ -35,6 +35,28 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
 	List<Event> findByFamilyIdAndCategoryId(long l, Long categoryId);
 
-	List<Event> findByFamilyIdAndDoneAndUserActive(Long familyId, Boolean eventDone, Boolean userActive);
+	List<Event> findByUserIdAndCategoryIdAndProjectIdAndDoneOrderByDeadline(Optional<Long> memberId,
+			Optional<Long> categoryId, Optional<Long> projectId, boolean b);
+
+	List<Event> findByUserIdAndCategoryIdAndDoneOrderByDeadline(Optional<Long> memberId, Optional<Long> categoryId,
+			boolean b);
+
+	List<Event> findByUserIdAndProjectIdAndDoneOrderByDeadline(Optional<Long> memberId, Optional<Long> projectId,
+			boolean b);
+
+	List<Event> findByUserIdAndDoneOrderByDeadline(Optional<Long> memberId, boolean b);
+
+	List<Event> findByFamilyIdAndCategoryIdAndProjectIdAndDoneOrderByDeadline(Optional<Long> familyId,
+			Optional<Long> categoryId, Optional<Long> projectId, boolean b);
+
+	List<Event> findByFamilyIdAndCategoryIdAndDoneOrderByDeadline(Optional<Long> familyId, Optional<Long> categoryId,
+			boolean b);
+
+	List<Event> findByFamilyIdAndProjectIdAndDoneOrderByDeadline(Optional<Long> familyId, Optional<Long> projectId,
+			boolean b);
+
+	List<Event> findByFamilyIdAndDoneOrderByDeadline(Optional<Long> familyId, boolean b);
+
+	List<Event> findByFamilyIdAndDoneAndUserActiveOrderByDeadline(Long familyId, Boolean eventDone, Boolean userActive);
 
 }

@@ -46,23 +46,25 @@ public class EventService {
 		// when there is a filter, event.done = false by default (=not done)
 		if (memberId.isPresent()) {
 			if (categoryId.isPresent() && projectId.isPresent()) {
-				list = repo.findByUserIdAndCategoryIdAndProjectIdAndDone(memberId, categoryId, projectId, false);
+				list = repo.findByUserIdAndCategoryIdAndProjectIdAndDoneOrderByDeadline(memberId, categoryId, projectId,
+						false);
 			} else if (categoryId.isPresent()) {
-				list = repo.findByUserIdAndCategoryIdAndDone(memberId, categoryId, false);
+				list = repo.findByUserIdAndCategoryIdAndDoneOrderByDeadline(memberId, categoryId, false);
 			} else if (projectId.isPresent()) {
-				list = repo.findByUserIdAndProjectIdAndDone(memberId, projectId, false);
+				list = repo.findByUserIdAndProjectIdAndDoneOrderByDeadline(memberId, projectId, false);
 			} else {
-				list = repo.findByUserIdAndDone(memberId, false);
+				list = repo.findByUserIdAndDoneOrderByDeadline(memberId, false);
 			}
 		} else {
 			if (categoryId.isPresent() && projectId.isPresent()) {
-				list = repo.findByFamilyIdAndCategoryIdAndProjectIdAndDone(familyId, categoryId, projectId, false);
+				list = repo.findByFamilyIdAndCategoryIdAndProjectIdAndDoneOrderByDeadline(familyId, categoryId,
+						projectId, false);
 			} else if (categoryId.isPresent()) {
-				list = repo.findByFamilyIdAndCategoryIdAndDone(familyId, categoryId, false);
+				list = repo.findByFamilyIdAndCategoryIdAndDoneOrderByDeadline(familyId, categoryId, false);
 			} else if (projectId.isPresent()) {
-				list = repo.findByFamilyIdAndProjectIdAndDone(familyId, projectId, false);
+				list = repo.findByFamilyIdAndProjectIdAndDoneOrderByDeadline(familyId, projectId, false);
 			} else {
-				list = repo.findByFamilyIdAndDone(familyId, false);
+				list = repo.findByFamilyIdAndDoneOrderByDeadline(familyId, false);
 			}
 		}
 		return list;
@@ -77,7 +79,7 @@ public class EventService {
 	 * @return a list of Events
 	 */
 	public List<Event> getEventsSearch(Long familyId, Boolean eventDone, Boolean UserActive) {
-		return repo.findByFamilyIdAndDoneAndUserActive(familyId, eventDone, UserActive);
+		return repo.findByFamilyIdAndDoneAndUserActiveOrderByDeadline(familyId, eventDone, UserActive);
 	}
 
 	/**

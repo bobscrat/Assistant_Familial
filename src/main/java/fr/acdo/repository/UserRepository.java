@@ -16,4 +16,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	public List<User> findByFamilyIdAndActive(Long familyId, Boolean boolean1);
 
+	public List<User> findByFamilyIdOrderByFirstName(Long familyId);
+
+	public List<User> findByFamilyIdAndActiveOrderByFirstName(Long familyId, Boolean boolean1);
+
 }
