@@ -37,7 +37,7 @@ public class ProjectService {
 
 	public List<Project> getProjectsWithFilters(Long familyId, Optional<Boolean> getInactive) {
 		List<Project> list;
-		if (getInactive.isPresent()) {
+		if (getInactive.isPresent() && getInactive.get()) {
 			list = repo.findByFamilyIdOrderByName(familyId);
 		} else {
 			list = repo.findByFamilyIdAndHasOnlyActiveEventOrderByName(familyId);
