@@ -6,7 +6,7 @@
 // import javax.servlet.http.HttpServletRequest;
 // import javax.servlet.http.HttpServletResponse;
 //
-// import org.springframework.security.core.Authentication;
+// import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 // import
 // org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 //
@@ -16,7 +16,7 @@
 // public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse
 // response, Authentication auth)
 // throws IOException, ServletException {
-// // TODO Auto-generated method stub
+//
 // response.setStatus(HttpServletResponse.SC_OK);
 // }
 //

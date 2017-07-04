@@ -9,7 +9,6 @@
 // import
 // org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 // import org.springframework.security.core.authority.AuthorityUtils;
-// import org.springframework.security.core.userdetails.User;
 // import org.springframework.security.core.userdetails.UserDetails;
 // import org.springframework.security.core.userdetails.UserDetailsService;
 // import
@@ -25,7 +24,6 @@
 // @Override
 // public void init(AuthenticationManagerBuilder auth) throws Exception {
 // auth.userDetailsService(userDetailsService());
-//
 // }
 //
 // @Bean
@@ -37,9 +35,7 @@
 // public UserDetails loadUserByUsername(String email) throws
 // UsernameNotFoundException {
 // fr.acdo.domain.User monUser = repo.findByEmail(email);
-//
 // if (monUser != null) {
-//
 // return new User(monUser.getEmail(), monUser.getPassword(), true, true, true,
 // true,
 // AuthorityUtils.createAuthorityList("USER"));
