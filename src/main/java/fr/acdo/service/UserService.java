@@ -36,6 +36,10 @@ public class UserService {
 		return repo.save(user);
 	}
 
+	public User updateUser(User user) {
+		return repo.save(user);
+	}
+
 	public List<User> getUsersWithFilters(Long familyId, Optional<Boolean> isActive) {
 		List<User> list;
 		if (isActive.isPresent()) {

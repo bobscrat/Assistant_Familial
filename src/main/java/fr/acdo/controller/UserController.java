@@ -122,7 +122,7 @@ public class UserController {
 					"L'utilisateur n'a pas été enregistré car au moins un champ est invalide.");
 		}
 		try {
-			newUser = service.saveUser(user);
+			newUser = service.updateUser(user);
 		} catch (DataIntegrityViolationException e) { // on catch l'erreur de
 														// contrainte intégrité
 			errMess.updateInBase(this.getClass(), new Object() {
