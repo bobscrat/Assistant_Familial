@@ -34,4 +34,12 @@ public class ContactService {
 		repo.delete(id);
 	}
 
+	public List<Contact> getContactsFamily(Long familyId) {
+		List<Contact> list;
+
+		list = repo.findByFamilyIdOrderByName(familyId);
+
+		return list;
+	}
+
 }

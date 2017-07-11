@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,6 +64,20 @@ public class ContactController {
 			throw new NoSuchElementException("Le contact n'a pas été trouvé.");
 		}
 		return contact;
+	}
+
+	// to get contacts for the family
+	@GetMapping("/filters")
+	public List<Contact> getContactsFamily(@RequestParam(value = "familyId") Long familyId) {
+		List<Contact> list = null;
+		try {
+			list = service.getContactsFamily(familyId);
+		} catch (CannotCreateTransactionException e) { // no database access
+			errMess.getAll(this.getClass(), new Object() {
+			}.getClass().getEnclosingMethod().getName());
+			throw new CannotCreateTransactionException("SERVEUR DEAD.");
+		}
+		return list;
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
