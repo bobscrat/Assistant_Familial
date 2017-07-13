@@ -19,7 +19,7 @@ public class PeriodicityService {
 	}
 
 	public List<Periodicity> getAllPeriodicities() {
-		return repo.findAll();
+		return repo.findAllByOrderById();
 	}
 
 	public Periodicity getPeriodicityById(Long id) {

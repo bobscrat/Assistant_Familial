@@ -9,6 +9,6 @@ import fr.acdo.domain.Priority;
 
 public interface PriorityRepository extends JpaRepository<Priority, Long> {
 
-	List<Priority> findAllOrderById();
+	List<Priority> findAllByOrderById();
 
 }

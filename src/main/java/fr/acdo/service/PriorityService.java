@@ -18,7 +18,7 @@ public class PriorityService {
 	}
 
 	public List<Priority> getAllPriorities() {
-		return repo.findAllOrderById();
+		return repo.findAllByOrderById();
 	}
 
 	public Priority getPriorityById(Long id) {
