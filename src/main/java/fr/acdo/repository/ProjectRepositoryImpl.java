@@ -16,8 +16,8 @@ public class ProjectRepositoryImpl implements ProjectRepositoryCustom {
 	@Override
 	public List<Project> findByFamilyIdAndHasOnlyActiveEventOrderByName(Long familyId) {
 		Query query = entityManager.createNativeQuery(
-				"SELECT DISTINCT p.* FROM project p JOIN event e ON e.project_id = p.id WHERE e.done = 0 AND e.family_id = ? ORDER BY p.name",
-				Project.class).setParameter(1, familyId);
+				"SELECT DISTINCT p.* FROM project p JOIN event e ON e.project_id = p.id WHERE e.done = 0 AND e.family_id = :id ORDER BY p.name",
+				Project.class).setParameter("id", familyId);
 		return query.getResultList();
 	};
 
